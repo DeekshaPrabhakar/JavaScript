@@ -72,6 +72,12 @@ $(document).ready(function () {
 <p>With some help from object based concepts, inheritance and design patterns, this function can be modified into a generic control which can be used efficiently and to avoid redundancy.</p>
 <h2>Object Oriented JavaScript</h2>
 <p>At the end our setting up of autocomplete control will be like this:</p>
+<h6>HTML</h6>
+```html
+Song:&nbsp;<input type="text" id="searchiTunes" placeholder="Enter a song" />
+<div id="songChoices"></div>
+```
+<h6>JavaScript</h6>
 ```javascript
 var aData = { inputCtrl: "searchiTunes", inputParamName: "term", menuCtrl: "songChoices", 
                 reqURL: "http://itunes.apple.com/search?entity=musicTrack", reqParams: { }, onSelect: '' };
@@ -80,12 +86,14 @@ controlOne.setAutocomplete();
 ```
 <h5>Object Creation</h5>
 <p>We need constructor version and not the literal version, since we want to be able to instantiate more than one autocomplete control</p>
+<h6>JavaScript</h6>
 ```javascript
 var lookupControl = function () {
 
 }
 ```
 <p>Now let's add properties and methods. Replace all specific id's or settings with a parameter name which can be passed during object initialization.</p>
+<h6>JavaScript</h6>
 ```javascript
 var lookupControl = function (data) {
     this.data = data;
@@ -106,6 +114,7 @@ var lookupControl = function (data) {
 };
 ```
 <p>Let's create another object for ajax call used in setAutocomplete() function's source function. Now the control and model looks like this</p>
+<h6>JavaScript</h6>
 ```javascript
 var lookupControl = function (data) {
     this.data = data;
