@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        * { margin: 0px; padding: 0px; }
+        #content { width: 800px; margin: 0 auto; padding: 20px 10px 10px 10px; }
+        #content input { border: 1px solid #dfdfdf; border-radius: 3px; box-sizing: border-box; font-size: 14px; padding: 5px; width: 350px; }
+        #content ul.ui-autocomplete { list-style-type: none; margin: 0; padding: 0; width: 350px !important; }
+        #content ul { font-size: 13px; }
+    </style>
+
+
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function setUpAutocompleteStatic() {
+            var topTenSongs = ["Can't Feel My Face - The Weeknd", "Cheerleader (Felix Jaehn Remix Radio Edit) - Omi", "Lean On (feat. MØ & DJ Snake) - Major Lazer",
+                            "Watch Me (Whip / Nae Nae) - Silentó", "Fight Song - Rachel Platten", "Good for You (feat. A$AP Rocky) - Selena Gomez",
+                            "Drag Me Down - One Direction", "Marvin Gaye (feat. Meghan Trainor) - Charlie Puth", "Locked Away (feat. Adam Levine) - R. City",
+                            "Kick the Dust Up - Luke Bryan"
+                          ];
+
+            $("#searchiTunesStatic").autocomplete({
+                appendTo: "#songChoicesStatic",
+                source: topTenSongs,
+                minLength: 0
+            });
+        }
+
+
+        function setUpAutocompleteDynamic() {
+            $("#searchiTunesDynamic").autocomplete({
+                appendTo: "#songChoicesDynamic",
+                minLength: 2,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "http://itunes.apple.com/search?term=" + request.term + "&entity=musicTrack",
+                        dataType: "jsonp",
+                        data: {
+                            featureClass: "P",
+                            style: "full",
+                            maxRows: 12,
+                            name_startsWith: request.term
+                        },
+                        success: function(data) {
+                            response($.map(data.results, function(item) {
+                                itunesJson = item;
+                                return {
+                                    imgUrl: item.artworkUrl30 ,
+                                    label: item.trackName
+                                }
+                            }));//end of response
+                        }//end of success
+                    });//end of ajax
+                }//end of source
+            });//end of autocomplete
+        }//end of function
+
+        $(document).ready(function () {
+            //setUpAutocompleteStatic();
+            //setUpAutocompleteDynamic();
+            
+            var aData = { inputCtrl: "searchiTunes", inputParamName: "term", menuCtrl: "songChoices", 
+                reqURL: "http://itunes.apple.com/search?entity=musicTrack", reqParams: { }, onSelect: '' };
+            var controlOne = new lookupControl(aData);
+            controlOne.setAutocomplete();
+        });
+
+        var lookupControl = function (data) {
+            this.data = data;
+            this.setAutocomplete = function () {
+                var ctrlID = "#" + this.data.inputCtrl;
+                $(ctrlID).autocomplete({
+                    appendTo: "#" + this.data.menuCtrl,
+                    autoFocus: true,
+                    delay: 500,
+                    minLength: 2,
+                    data: this.data,
+                    select: this.data.onSelect,
+                    source: function (request, response) {
+                        var ctrlID = "#" + this.options.data.inputCtrl;
+                        this.options.data.reqParams[this.options.data.inputCtrl] = $(ctrlID).val(); //source is called on entry of i/p, so need to reevaluate it each time
+                        var modelData = this.options.data;
+                        var model = new lookupModel(modelData); //model is called in controller
+                        model.getData(request, response);
+                    }
+                }); //end of autocomplete
+            }
+        };
+
+        var lookupModel = function (data) {
+            this.data = data;
+            this.getData = function (request, response) {
+                var ctrlID = "#" + this.data.inputCtrl;
+                this.data.reqParams[this.data.inputCtrl] = $(ctrlID).val(); //source is called on entry of i/p, so need to reevaluate it each time
+                $.ajax({
+                    url: this.data.reqURL + '&' + this.data.inputParamName + '=' + this.data.reqParams[this.data.inputCtrl] ,
+                    dataType: "jsonp",
+                    success: function (args) {
+                        response($.map(args.results, function (item) {                        
+                            itunesJson = item;
+                                return {
+                                    imgUrl: item.artworkUrl30 ,
+                                    label: item.trackName
+                                }
+                        }));
+                    }
+                });
+            } //end of getData
+        };
+
+    </script>
+</head>
+<body>
+    <div id="pgBackground">
+        <div id="content">
+           Song:&nbsp;<input type="text" id="searchiTunesStatic" placeholder="Enter a song" />
+            <div id="songChoicesStatic"></div>
+            <h2>Dynamic Source</h2>
+            Song:&nbsp;<input type="text" id="searchiTunes" placeholder="Enter a song" />
+            <div id="songChoices"></div>
+        </div>
+    </div>
+</body>
+</html>
