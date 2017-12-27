@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        * { margin: 0px; padding: 0px; }
+        #content { width: 800px; margin: 0 auto; padding: 20px 10px 10px 10px; }
+        #content input { border: 1px solid #dfdfdf; border-radius: 3px; box-sizing: border-box; font-size: 14px; padding: 5px; width: 350px; }
+    </style>
+
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">     
+
+    function formatResults(jsonObjects){
+        var results = JSON.parse(jsonObjects).hits;
+
+        var recipe = results[0].recipe.label;
+
+        var el = createElement(results[0].recipe);
+
+        document.getElementById("results").innerHTML = recipe;
+    }
+
+    function createElement(recipe)
+    {
+        var ingredients = "<ul>";
+
+        for(var i = 0; i< recipe.ingredients.length; i++){
+            ingredients += `<li>${recipe.ingredients[i].text}: ${recipe.ingredients[i].weight}</li>`;
+        }
+        ingredients += "</ul>";
+
+        var el=`<div><h3>${recipe.label}</h3>${ingredients}</div>`;          
+        return el;
+    }
+     function searchRecipe(){
+        //  var appId = "093dfd61";
+        //  var appKey = "32475a5ccd796a90deb4567d2f985058";
+        //  var searchText = "pizza";
+        //  //var url = "https://api.edamam.com/search?q=" + searchText + "&app_id=" + appId+ "&app_key=" + appKey;
+        //  var url = `https://api.edamam.com/search?q=${searchText}&app_id=${appId}&app_key=${appKey}`;
+
+        //  var xhttp = new XMLHttpRequest();
+        //  xhttp.onreadystatechange = function() {
+        //    if (this.readyState == 4 && this.status == 200) {
+        //     formatResults(this.responseText);
+        //    }
+        //  };
+        //  xhttp.open("GET", url, true);
+        //  xhttp.send();
+
+     }
+  
+
+    </script>
+</head>
+<body>
+    <div id="pgBackground">
+        <div id="content">
+           Recipe Planner
+           <div id="results"></div>
+           <input type="button" id="searchRecipe" value="Search Recipe" onclick="searchRecipe()" />
+        </div>
+    </div>
+</body>
+</html>

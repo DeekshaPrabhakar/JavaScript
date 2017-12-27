@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        #content {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px 10px 10px 10px;
+        }
+
+        #content input[type="text"] {
+            border: 1px solid #dfdfdf;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 14px;
+            padding: 5px;
+            width: 350px;
+        }
+
+        .section {
+            margin: 10px 0;
+        }
+
+        .sectionLabel {
+            display: block;
+            margin: 10px 0;
+        }
+
+        label.radioLbl {
+            width: 100px;
+            display: inline-block;
+        }
+    </style>
+
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">     
+
+        // $(document).ready(function () {
+
+        // });
+
+        function calculateTip(){
+            var bill = Number(document.getElementById("billAmount").value);
+            var percentagebtn = document.getElementsByName("tip");
+
+            var percentage = 0;
+
+            for(var i=0; i< percentagebtn.length; i++){
+                if(percentagebtn[i].checked){
+                    percentage = Number(percentagebtn[i].value);
+                    break;
+                }
+            }
+           document.getElementById("totalAmount").value = bill * percentage + bill;
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="pgBackground">
+        <div id="content">
+            <h1>Tip Calculator</h1>
+            <div class="section">
+            <label class="sectionLabel">Bill Amount: </label>
+            <input type="text" id="billAmount" value="" />
+        </div>
+        <div class="section">
+            <label class="sectionLabel">Tip Percentages</label>
+            <input type="radio" name="tip" value="0.15" id="15Tip">
+            <label class="radioLbl" for="15Tip">15%</label>
+            <input type="radio" name="tip" value="0.2" id="20Tip">
+            <label class="radioLbl" for="20Tip">20%</label>
+            <input type="radio" name="tip" value="0.25" id="25Tip">
+            <label class="radioLbl" for="25Tip">25%</label>
+            </div>
+            <div class="section">
+                <label class="sectionLabel">Total Amount:</label>
+                <input type="text" id="totalAmount" />
+            </div>
+            <div class="section">
+                <input type="button" id="calculateTip" value="Calculate Tip" onclick="calculateTip(); return false;"/>
+                </div>
+        </div>
+    </div>
+</body>
+
+</html>

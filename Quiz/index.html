@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Quiz App</title>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #content {
+            width: 800px;
+            margin: 0 auto;
+            padding: 20px 10px 10px 10px;
+        }
+
+        #content input {
+            border: 1px solid #dfdfdf;
+            border-radius: 3px;
+            box-sizing: border-box;
+            font-size: 14px;
+            padding: 5px;
+            width: 350px;
+        }
+    </style>
+
+    <script type="text/javascript">     
+
+        function formatResults(jsonObjects) {
+            //parse results
+            //for each question object
+            //populate question UI createQuestionUI
+            var arr = JSON.parse(jsonObjects);
+            
+           // console.log("FRom format: " + arr);
+            var el = `<div>`
+            arr.map((item) => {
+                el += "<h4>" + item.question + "</h4>";
+                item.options.map((option) => {
+                    el += "<input type='radio' text= " + option.title + "value= " + option.title +"/>";
+                    console.log("------:" + option.isAnswer);
+                })
+            })
+            el += "</div>"
+            document.getElementById("quizView").innerHTML = el;
+        }
+
+        function createQuestionUI(question) {
+            var el = `<div></div>`;
+            return el;
+        }
+
+        function loadQuiz() {
+            var results = `[
+                {
+                    "question": "React was developed by",
+                    "options": [
+                        {
+                            "title": "Google Engineers",
+                            "isAnswer": "false"
+                        },
+                        {
+                            "title": "Facebook Engineers",
+                            "isAnswer": "true"
+                        }
+                    ]
+                },
+                {
+                    "question": "ReactJS is an MVC based framework",
+                    "options": [
+                        {
+                            "title": "True",
+                            "isAnswer": "false"
+                        },
+                        {
+                            "title": "False",
+                            "isAnswer": "true"
+                        }
+                    ]
+                }
+            ]`;
+        
+            formatResults(results);
+
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div id="pgBackground">
+        <div id="content">
+            React Quiz
+            <input type="button" id="loadQuiz" value="Load Quiz" onclick="loadQuiz()" />
+            <div id="quizView"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        * { margin: 0px; padding: 0px; }
+        #content { width: 800px; margin: 0 auto; padding: 20px 10px 10px 10px; }
+        #content input { border: 1px solid #dfdfdf; border-radius: 3px; box-sizing: border-box; font-size: 14px; padding: 5px; width: 350px; }
+        #content ul.ui-autocomplete { list-style-type: none; margin: 0; padding: 0; width: 350px !important; }
+        #content ul { font-size: 13px; }
+    </style>
+
+    <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function test(){
+            var str = "aaabbb";//abc
+            var anagramCount = -1;
+
+            if(str.length % 2 == 1){
+                return anagramCount; //odd, no add/sub of characters only replacement allowed 
+            }
+
+            var mid = str.length/2;
+            var str1 = str.substring(0,mid).split('');
+            var str2 = str.substring(mid, str.length);
+            var myMap = new Map();
+        
+            for(var i=0; i< str1.length; i++){
+                if(myMap.has(str1[i])){
+                    myMap[str1[i]] =  myMap[str1[i]] + 1;
+                }
+                else{
+                    myMap.set(str1[i], 1);
+                }
+            }
+
+            anagramCount = 0;
+            for(var i=0; i< str2.length; i++){
+                if(myMap.has(str2[i])){
+                    if(myMap[str2[i]] == 1){
+                    myMap.delete(str2[i]);
+                    }
+                    else{
+                        myMap[str2[i]] = myMap[str2[i]] - 1;
+                    }
+                }
+            }
+           
+            return myMap.size;
+        }
+
+      
+
+    </script>
+</head>
+<body>
+    <div id="pgBackground">
+        <div id="content">
+          <input type="button" value="test" onclick="test()" />
+            <div id="quizView"></div>
+        </div>
+    </div>
+</body>
+</html>
