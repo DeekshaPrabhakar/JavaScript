@@ -1,11 +1,25 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta charset="utf-8">
+    <title>Revised Butterfly Clicker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/butterfly.css">
 </head>
 <body>
+    <ul class="butterfly-list"></ul>
+    <div id="displayArea"></div>
 
+    <script type="text/template" data-template="butterfly">
+        <li class="butterfly" data-id="{{id}}">
+            <h2>{{name}}</h2>
+            <img class="butterflyPic" src="{{imageUrl}}" />
+            <label>{{clickCount}}</label>
+        </li>
+    </script>
+
+    <script src="js/jquery-1.11.1.js"></script>
+    <script src="js/appPremiumRevised.js"></script>
 </body>
 </html>

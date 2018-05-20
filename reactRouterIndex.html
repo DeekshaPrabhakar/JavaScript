@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="js/react.js" type="text/javascript"></script>
+    <script src="js/react-dom.js" type="text/javascript"></script>
+    <script src="js/babel.js" type="text/javascript"></script>
+    <script src="js/ReactRouter.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="container">
+
+    </div>
+
+    <script type="text/babel">
+        var destination = document.querySelector("#container");
+        var App = React.createClass({
+        render: function() {
+        return (
+        <div>
+            <h1>Simple SPA</h1>
+            <ul classname="header">
+                <li>Home</li>
+                <li>Stuff</li>
+                <li>Contact</li>
+            </ul>
+            <div classname="content">
+
+            </div>
+        </div>
+        )
+        }
+        });
+        ReactDOM.render(
+        <div>
+            <App />
+        </div>,
+        destination
+        );
+    </script>
+</body>
+</html>
