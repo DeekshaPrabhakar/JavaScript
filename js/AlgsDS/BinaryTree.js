@@ -10,16 +10,43 @@ function RunBinaryTreeProblems() {
     treeNode.right = new TreeNode(3);
     treeNode.left.left = new TreeNode(4);
     treeNode.left.right = new TreeNode(5);
-    console.log(inorderTraversalRecursive(treeNode));
-    console.log(preorderTraversalRecursive(treeNode));
-    console.log(postorderTraversalRecursive(treeNode));
+    console.log(inorderTraversal(treeNode));
+    // console.log(inorderTraversalRecursive(treeNode));
+    // console.log(preorderTraversalRecursive(treeNode));
+    // console.log(postorderTraversalRecursive(treeNode));
 }
 
 function TreeNode(val) {
     this.val = val;
     this.left = this.right = null;
 }
- 
+
+
+var inorderTraversal = function(root) {
+    var arr = new Array();
+    var stack = new Stack();
+
+    if(root == null){
+        return arr;
+    }
+    
+    var current = root;
+    while(current != null || stack.size() > 0){
+        if(current != null){
+            stack.push(current);
+            current = current.left;
+        }
+        else {
+            if(stack.size() == 0){
+                break;
+            }
+            current = stack.pop();
+            arr.push(current.val);
+            current = current.right;
+        }
+    }
+    return arr;
+};
 
 var inorderTraversalRecursive = function (root) {
     //left - root - right

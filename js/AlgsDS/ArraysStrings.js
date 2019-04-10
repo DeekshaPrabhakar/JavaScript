@@ -1,4 +1,4 @@
-function run() {
+function RunArraysNStrings() {
     //reverseString("hello");
     // console.log(isValid("()[]{}"));
     // console.log(isValid("([)]"));
@@ -6,22 +6,74 @@ function run() {
     // console.log(isPalindrome("A man, a plan, a canal: Panama"));
     // console.log(isPalindrome("race a car"));
 
-    console.log(countAndSay(3));
-    console.log(countAndSay(4));
-    console.log(countAndSay(5));
+    // console.log(countAndSay(3));
+    // console.log(countAndSay(4));
+    // console.log(countAndSay(5));
+    // console.log(reverse(123));
+    // console.log(reverse(1000000045));
+    // // console.log(reverse(54321));
+    // console.log(longestCommonPrefix(["flower","flow","flight"]));
+    // console.log(longestCommonPrefix(["dog","racecar","car"]));
+    // console.log(longestCommonPrefix(["a","b"]));
+
+    console.log(removeDuplicates([1,1,2]));
+    console.log(removeDuplicates([0,0,1,1,1,2,2,3,3,4]));
 }
 
-var isValid = function (s) {
-    var valid = true;
-    var stack = new Stack();
+var removeDuplicates = function(nums) {
+    let nonRepeatingStartIndex = 0;
+    let len = 0;
 
-    var strArray = s.split("");
-    for (var str of strArray) {
+    for(var i=0; i<nums.length; i++){
+
+    }
+
+};
+
+var longestCommonPrefix = function(strs) {
+    let prefix = "";
+    if(strs.length == 0){
+        return prefix;
+    }
+    let minLengthStr = Number.MAX_VALUE;
+
+    for(var str of strs){
+        minLengthStr = Math.min(minLengthStr, str.length);
+    }
+
+    let index = 0;
+
+    while(index < minLengthStr){
+        let prefixToTest = strs[0][index];
+        for(let i=1; i< strs.length; i++){
+            if(prefixToTest != strs[i][index]){
+                return prefix;
+            }
+        }
+        prefix += prefixToTest;
+        index += 1;
+    }
+
+    return prefix;
+};
+
+var reverse = function(x) {
+    let reverse = parseInt(x.toString().split('').reverse().join(''));
+    if(reverse > Math.pow(2,31)) return 0;
+    return reverse * Math.sign(x);
+};
+
+var isValid = function (s) {
+    let valid = true;
+    let stack = new Stack();
+
+    let strArray = s.split("");
+    for (let str of strArray) {
         if (isOpen(str)) {
             stack.push(str);
         }
         else {
-            var openCh = getOpenChForCloseCh(str);
+            let openCh = getOpenChForCloseCh(str);
             if (stack.size() == 0) {
                 valid = false;
                 break;
@@ -39,7 +91,7 @@ var isValid = function (s) {
 };
 
 function getOpenChForCloseCh(ch) {
-    var openCh = "";
+    let openCh = "";
     switch (ch) {
         case ")":
             openCh = "(";
@@ -57,7 +109,7 @@ function getOpenChForCloseCh(ch) {
 }
 
 function isOpen(ch) {
-    var isOpen = false;
+    let isOpen = false;
     switch (ch) {
         case "(":
             isOpen = true;
@@ -82,12 +134,12 @@ var isPalindrome = function (s) {
     if (s.length == 0) {
         return true;
     }
-    var palindrome = true;
-    var cleanStr = alphaNumeric(s);
-    var chArray = cleanStr.split("");
+    let palindrome = true;
+    let cleanStr = alphaNumeric(s);
+    let chArray = cleanStr.split("");
 
-    var i = 0;
-    var j = chArray.length - 1;
+    let i = 0;
+    let j = chArray.length - 1;
 
     while (i <= j) {
         if (chArray[i].toLowerCase() != chArray[j].toLowerCase()) {
