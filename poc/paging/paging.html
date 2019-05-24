@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cities</title>
+    <link href="./paging.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="pageContent">
+        <header>
+            <h1>List of Cities</h1>
+
+            <form class="search-form">
+                    <input type="text" class="search" placeholder="City or State">                    
+                  </form>
+        </header>
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>City</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody id="cities">
+                    <script id="cityRowTemplate" type="text/template">
+        <tr>
+            <td>{{rank}}</td>
+            <td>{{city}}</td>
+            <td>{{state}}</td>
+        </tr>
+        </script>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script type="text/javascript" src="./paging.js"></script>
+</body>
+
+</html>
