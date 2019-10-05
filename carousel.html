@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carousel</title>
+    <style>
+        .carousel {
+            position: relative;
+            height: 600px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .carousel_image {
+            width: 100%;
+            object-fit: cover;
+            height: 100%;
+        }
+
+        .carousel_track-container {
+            background: lightgreen;
+            padding: 10px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel_track {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            position: relative;
+            height: 100%;
+            transition: transform 250ms ease-in;
+        }
+
+        .carousel_slide {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%
+        }
+
+        .carousel_button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 0;
+        }
+
+        .carousel_button_left {
+            left: -40px;
+            cursor: pointer;
+        }
+
+        .carousel_button_right {
+            right: -40px;
+            cursor: pointer;
+            background: white;
+        }
+
+
+        .carousel_button img {
+            width: 12px;
+        }
+
+        .carousel_nav {
+            background: pink;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .carousel_indicator {
+            border: 0;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            margin: 0 12px;
+            cursor: pointer;
+        }
+
+        .carousel_indicator.current-slide {
+            background: rgba(0, 0, 0, 0.75);
+        }
+
+        .is_Hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="carousel">
+        <button class="carousel_button carousel_button_left is_Hidden">
+            <img src="images/left.svg" alt="">
+        </button>
+
+        <div class="carousel_track-container">
+            <ul class="carousel_track">
+                <li class="carousel_slide current-slide">
+                    <img class="carousel_image" src="images/Browny.jpg" alt="">
+                </li>
+                <li class="carousel_slide">
+                    <img class="carousel_image" src="images/Orange.jpg" alt="">
+                </li>
+                <li class="carousel_slide">
+                    <img class="carousel_image" src="images/Rosy.jpg" alt="">
+                </li>
+            </ul>
+        </div>
+
+        <button class="carousel_button carousel_button_right">
+
+            <img src="images/right.svg" alt="">
+        </button>
+
+        <div class="carousel_nav">
+            <button class="carousel_indicator current-slide"></button>
+            <button class="carousel_indicator"></button>
+            <button class="carousel_indicator"></button>
+        </div>
+    </div>
+    <script>
+        const track = document.querySelector('.carousel_track');
+        const slides = Array.from(track.children);
+        console.log(slides);
+
+        const nextButton = document.querySelector('.carousel_button_right');
+        const prevButton = document.querySelector('.carousel_button_left');
+        const dotsNav = document.querySelector('.carousel_nav');
+        const dots = Array.from(dotsNav.children);
+
+        const slideSize = slides[0].getBoundingClientRect();
+        const slideWidth = slideSize.width;
+
+        //arrange the slides next to one another
+
+        // slides[0].style.left = slideWidth * 0 + 'px';
+        // slides[1].style.left = slideWidth * 1 + 'px';
+        // slides[2].style.left = slideWidth * 2 + 'px';
+
+        const setSlidePosition = (slide, index) => {
+            slide.style.left = slideWidth * index + 'px';
+        }
+        slides.forEach(setSlidePosition);
+
+        const moveToSlide = (track, currentSlide, targetSlide) => {
+            track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+            currentSlide.classList.remove('current-slide');
+            targetSlide.classList.add('current-slide');
+        }
+
+        const updateDots = (currentDot, targetDot) => {
+            currentDot.classList.remove('current-slide');
+            targetDot.classList.add('current-slide');
+        }
+
+        const hideShowArrows = (prevButton, nextButton, targetIndex) => {
+            if (targetIndex === 0) {
+                prevButton.classList.add("is_Hidden");
+                nextButton.classList.remove("is_Hidden");
+            }
+            else if (targetIndex === slides.length - 1) {
+                prevButton.classList.remove("is_Hidden");
+                nextButton.classList.add("is_Hidden");
+            }
+            else {
+                prevButton.classList.remove("is_Hidden");
+                nextButton.classList.remove("is_Hidden");
+            }
+        }
+
+        //when I click right, move slides to the right
+        nextButton.addEventListener("click", e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const nextSlide = currentSlide.nextElementSibling;
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const nextDot = currentDot.nextElementSibling;
+            const nextIndex = slides.findIndex(slide => slide === nextSlide);
+
+            hideShowArrows(prevButton, nextButton, nextIndex);
+            updateDots(currentDot, nextDot);
+            moveToSlide(track, currentSlide, nextSlide);
+        })
+
+        //when I click left, move slides to the left        
+        prevButton.addEventListener("click", e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const prevSlide = currentSlide.previousElementSibling;
+
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const prevDot = currentDot.previousElementSibling;
+
+            const prevIndex = slides.findIndex(slide => slide === prevSlide);
+
+            hideShowArrows(prevButton, nextButton, prevIndex);
+            updateDots(currentDot, prevDot);
+            moveToSlide(track, currentSlide, prevSlide);
+        })
+
+        //when I click on nav indicator
+        dotsNav.addEventListener("click", e => {
+            const targetDot = e.target.closest('button');
+            if (!targetDot) {
+                return;
+            }
+
+            const currentSlide = track.querySelector('.current-slide');
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const targetIndex = dots.findIndex(dot => dot === targetDot);
+            const targetSlide = slides[targetIndex];
+
+            moveToSlide(track, currentSlide, targetSlide);
+            updateDots(currentDot, targetDot);
+            hideShowArrows(prevButton, nextButton, targetIndex);
+
+        })
+
+
+        let e = new Emitter();
+        let o = new Observer();
+
+        e.subscribe(o, cb);
+        e.subscribe(o, cb2);
+        e.publish();// cb, cb2
+        e.unsubscribe(o, cb);
+        e.publish();
+
+        
+
+
+
+        // add the function to the list of subscribers to a particular topic
+        let PubSub = {
+            events: {},
+            publish: function(eventName, ...args){
+
+            },
+            subscribe: function(eventName, callback){
+
+            },
+            unsubscribe: function(instance){
+
+            }
+        }
+
+        var testSubscriber = function (topics, data) {
+            console.log(topics + ": " + data);
+        };
+        // maintain the token (subscription instance) to enable unsubscription later
+
+        var testSubscription = PubSub.subscribe('example1', testSubscriber);
+
+
+
+        // publish a topic or message asyncronously
+
+        PubSub.publish('example1', 'hello scriptjunkie!');
+
+        PubSub.publish('example1', ['test', 'a', 'b', 'c']);
+
+        PubSub.publish('example1', [{ 'color': 'blue' }, { 'text': 'hello' }]);
+
+
+
+        // unsubscribe from further topics
+
+        setTimeout(function () {
+
+            PubSub.unsubscribe(testSubscription);
+
+        }, 0);
+
+
+
+        // test that we've fully unsubscribed
+
+        PubSub.publish('example1', 'hello again!');
+
+
+
+
+
+    </script>
+</body>
+
+</html>

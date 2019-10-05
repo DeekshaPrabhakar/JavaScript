@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>First React App</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <!-- <h1 id="header">Deeksha</h1> -->
+    <script type="text/babel">
+      function Avatar(props) {
+  return React.createElement('img', {src: props.img});
+}
+
+function Label(props) {
+   return React.createElement('h1', null, 'Name: ', props.name);
+}
+
+function ScreenName(props) {
+   return React.createElement('h3', null, 'Username:',props.username);
+}
+
+function Badge(props) {
+  let user = props.user
+  return React.createElement('div',
+                             null, 
+                             React.createElement(Avatar {img:user.img}, 
+                             React.createElement(Label,{name:user.name},
+                            React.createElement(ScreenName, {username:user.username})
+  );
+}
+
+ReactDOM.render( React.createElement(Badge, user={{
+    name: 'Tyler McGinnis',
+    img: 'https://avatars0.githubusercontent.com/u/2933430?v=3&s=460',
+    username: 'tylermcginnis'
+  }}),
+  document.getElementById('app')
+);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Advanced JavaScript</title>
+    <script type="text/javascript">
+        function Run(){
+            // createOwnArray()
+        }
+
+        function createOwnArray(){
+            let myArray = new array();
+            Object.defineProperty(myArray, 'length',{
+                value: 0,
+                enumerable:false,
+                writable: true
+            })
+                        
+            console.log(myArray);
+            myArray.push("Deeksha");
+            myArray.push("Aahana");
+            myArray.push("Prema");
+            myArray.push("Prabhu");
+            console.log(myArray);
+            myArray.push("dee");            
+            console.log(myArray);
+            console.log(myArray.pop());            
+            console.log(myArray);
+            console.log(myArray.filter((friend) => friend.charAt(0) !== 'P'));            
+            console.log(myArray);
+
+        }
+
+        function array(){
+            let arr = Object.create(array.prototype);
+            arr.length = 0;
+
+            for(let key in arguments){
+                arr[key] = arguments[key];
+                arr.length += 1;
+            }
+
+            return arr;
+        }
+
+        array.prototype.push = function(element){
+            // console.log(this);
+            this[this.length] = element;
+            this.length++;
+            return this.length;
+        }
+
+        array.prototype.pop = function(){
+            this.length--;
+            let removedElement = this[this.length]  ;
+            delete this[this.length];
+            return removedElement;
+        }
+
+
+        array.prototype.filter = function(cb){
+            let newArray = array();
+
+            for(let index in this){
+                if(this.hasOwnProperty(index)){
+                    const element = this[index];
+
+                    if(cb(element, index)){
+                        newArray.push(element)
+                    }
+                }
+            }
+            return newArray;
+        }
+
+    </script>
+</head>
+
+<body>
+    <input type="button" value="Run" onclick="Run()" />
+ 
+</body>
+
+</html>
